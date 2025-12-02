@@ -60,7 +60,6 @@ export function mergeClaudeMdContent(
   const END_MARKER = '<!-- gha-claude-md:end -->';
 
   let userContent = '';
-  let existingManagedContent = '';
 
   if (existingContent) {
     const startIndex = existingContent.indexOf(START_MARKER);
@@ -69,10 +68,6 @@ export function mergeClaudeMdContent(
     if (startIndex !== -1 && endIndex !== -1) {
       // Extract user content (before the managed section)
       userContent = existingContent.substring(0, startIndex).trim();
-      existingManagedContent = existingContent.substring(
-        startIndex + START_MARKER.length,
-        endIndex
-      );
     } else {
       // No managed section yet, all content is user content
       userContent = existingContent.trim();

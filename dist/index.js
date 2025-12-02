@@ -32779,14 +32779,12 @@ function mergeClaudeMdContent(existingContent, updates) {
     const START_MARKER = '<!-- gha-claude-md:start -->';
     const END_MARKER = '<!-- gha-claude-md:end -->';
     let userContent = '';
-    let existingManagedContent = '';
     if (existingContent) {
         const startIndex = existingContent.indexOf(START_MARKER);
         const endIndex = existingContent.indexOf(END_MARKER);
         if (startIndex !== -1 && endIndex !== -1) {
             // Extract user content (before the managed section)
             userContent = existingContent.substring(0, startIndex).trim();
-            existingManagedContent = existingContent.substring(startIndex + START_MARKER.length, endIndex);
         }
         else {
             // No managed section yet, all content is user content

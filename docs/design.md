@@ -154,38 +154,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### 設定ファイルを使った方法
-
-```yaml
-# .github/claude-md-sync.yml
-actions:
-  - owner: actions
-    repo: checkout
-    claude-md-path: CLAUDE.md  # アクション側の CLAUDE.md パス
-  - owner: anthropics
-    repo: claude-code-action
-    claude-md-path: docs/CLAUDE.md
-```
-
-```yaml
-name: Update CLAUDE.md
-
-on:
-  schedule:
-    - cron: '0 0 * * *'
-
-jobs:
-  update-claude-md:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: s4na/gha-claude-md@v1
-        with:
-          config-file: .github/claude-md-sync.yml
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-```
-
 ## 処理フロー詳細
 
 ### 1. 監視対象アクションの解析
