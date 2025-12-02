@@ -1,26 +1,26 @@
 # gha-claude-md
 
-GitHub Action to automatically update CLAUDE.md when monitored GitHub Actions are updated.
+監視対象のGitHub Actionsが更新されたときに、CLAUDE.mdを自動的に更新するGitHub Actionです。
 
-## Overview
+## 概要
 
-When the GitHub Actions you use release new versions, this action automatically:
-1. Checks for the latest version of each monitored action
-2. Fetches the CLAUDE.md from the latest release
-3. Compares with your existing CLAUDE.md
-4. Creates a PR to update if there are changes
+使用しているGitHub Actionsの新バージョンがリリースされると、このActionは自動的に以下を実行します：
+1. 監視対象の各Actionの最新バージョンをチェック
+2. 最新リリースからCLAUDE.mdを取得
+3. 既存のCLAUDE.mdと比較
+4. 変更があればPRを作成して更新
 
-## Usage
+## 使い方
 
-### Basic Usage
+### 基本的な使い方
 
 ```yaml
 name: Update CLAUDE.md
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run daily at 00:00 UTC
-  workflow_dispatch:      # Allow manual trigger
+    - cron: '0 0 * * *'  # 毎日UTC 00:00に実行
+  workflow_dispatch:      # 手動実行を許可
 
 jobs:
   update-claude-md:
@@ -40,26 +40,26 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### Inputs
+### 入力パラメータ
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `actions` | Yes | - | Actions to monitor (newline-separated, e.g., `owner/repo`) |
-| `claude-md-path` | No | `CLAUDE.md` | Path to CLAUDE.md in your repository |
-| `github-token` | Yes | - | GitHub token for creating PRs |
-| `pr-branch-prefix` | No | `update-claude-md/` | Prefix for PR branches |
-| `pr-title-template` | No | `Update CLAUDE.md from {action} {version}` | Template for PR title |
+| 入力 | 必須 | デフォルト | 説明 |
+|------|------|-----------|------|
+| `actions` | はい | - | 監視するAction（改行区切り、例：`owner/repo`） |
+| `claude-md-path` | いいえ | `CLAUDE.md` | リポジトリ内のCLAUDE.mdのパス |
+| `github-token` | はい | - | PR作成用のGitHubトークン |
+| `pr-branch-prefix` | いいえ | `update-claude-md/` | PRブランチのプレフィックス |
+| `pr-title-template` | いいえ | `Update CLAUDE.md from {action} {version}` | PRタイトルのテンプレート |
 
-### Outputs
+### 出力
 
-| Output | Description |
-|--------|-------------|
-| `pr-url` | URL of created PR(s) |
-| `updated-actions` | JSON array of updated actions |
+| 出力 | 説明 |
+|------|------|
+| `pr-url` | 作成されたPRのURL |
+| `updated-actions` | 更新されたActionのJSON配列 |
 
-### Custom CLAUDE.md Path
+### カスタムCLAUDE.mdパス
 
-You can specify a custom path for CLAUDE.md in the monitored action:
+監視対象のActionでCLAUDE.mdのカスタムパスを指定できます：
 
 ```yaml
 actions: |
@@ -67,22 +67,22 @@ actions: |
   another/action:custom/path/CLAUDE.md
 ```
 
-## How It Works
+## 動作の仕組み
 
-1. **Parse Actions**: The action parses the list of actions to monitor
-2. **Check Versions**: For each action, it fetches the latest release/tag
-3. **Compare**: Checks if the CLAUDE.md has been updated since the last sync
-4. **Merge**: Merges new content while preserving your custom sections
-5. **Create PR**: Creates a pull request with the changes
+1. **Actionの解析**: 監視対象のActionリストを解析
+2. **バージョンチェック**: 各Actionの最新リリース/タグを取得
+3. **比較**: 前回の同期以降にCLAUDE.mdが更新されたかチェック
+4. **マージ**: カスタムセクションを保持しつつ新しいコンテンツをマージ
+5. **PR作成**: 変更内容でPull Requestを作成
 
-### CLAUDE.md Format
+### CLAUDE.mdのフォーマット
 
-Your CLAUDE.md will be formatted like this:
+CLAUDE.mdは以下のようにフォーマットされます：
 
 ```markdown
-# Your Project
+# あなたのプロジェクト
 
-Your custom content here...
+あなたのカスタムコンテンツをここに...
 
 ---
 
@@ -90,22 +90,22 @@ Your custom content here...
 
 ## From actions/checkout@v4
 
-(Content from actions/checkout CLAUDE.md)
+（actions/checkoutのCLAUDE.mdの内容）
 
 ## From anthropics/claude-code-action@v1
 
-(Content from claude-code-action CLAUDE.md)
+（claude-code-actionのCLAUDE.mdの内容）
 
 <!-- gha-claude-md:end -->
 ```
 
-Content between the markers is automatically managed. Your content above the markers is preserved.
+マーカー間のコンテンツは自動的に管理されます。マーカーより上のあなたのコンテンツは保持されます。
 
-## Requirements
+## 要件
 
-- GitHub token with `contents: write` and `pull-requests: write` permissions
-- The monitored actions must have a CLAUDE.md file
+- `contents: write`と`pull-requests: write`権限を持つGitHubトークン
+- 監視対象のActionにはCLAUDE.mdファイルが必要
 
-## License
+## ライセンス
 
 MIT
