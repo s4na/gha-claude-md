@@ -1,0 +1,37 @@
+name: 'Update CLAUDE.md from Actions'
+description: 'Automatically update CLAUDE.md when GitHub Actions are updated'
+author: 's4na'
+
+branding:
+  icon: 'file-text'
+  color: 'orange'
+
+inputs:
+  actions:
+    description: 'Actions to monitor (JSON array or newline-separated, e.g., "actions/checkout" or "owner/repo")'
+    required: true
+  claude-md-path:
+    description: 'Path to CLAUDE.md in your repository'
+    required: false
+    default: 'CLAUDE.md'
+  github-token:
+    description: 'GitHub token for creating PRs (requires contents:write and pull-requests:write)'
+    required: true
+  pr-branch-prefix:
+    description: 'Prefix for PR branches'
+    required: false
+    default: 'update-claude-md/'
+  pr-title-template:
+    description: 'Template for PR title. Use {action} and {version} as placeholders'
+    required: false
+    default: 'Update CLAUDE.md from {action} {version}'
+
+outputs:
+  pr-url:
+    description: 'URL of created PR(s), JSON array if multiple'
+  updated-actions:
+    description: 'List of actions that were updated (JSON array)'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
